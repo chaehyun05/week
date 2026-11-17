@@ -16,52 +16,67 @@
   html{background:#d8d2c6}
   body{min-height:100vh;padding:calc(env(safe-area-inset-top) + 12px) 10px calc(env(safe-area-inset-bottom) + 24px);
     background:radial-gradient(ellipse at 30% 0%,rgba(255,255,255,.35),transparent 60%),#d8d2c6}
-  .hand{font-family:"Gaegu",cursive}
-  .wrap{max-width:1100px;margin:0 auto}
-  header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:4px 4px 12px}
-  h1{font-family:"Gaegu",cursive;font-weight:700;font-size:30px;margin:0;letter-spacing:.5px;white-space:nowrap}
-  @media (max-width:420px){ h1{font-size:25px} .range{min-width:0;font-size:17px;white-space:nowrap} .weeknav button{width:30px;height:30px} }
-  .weeknav{display:flex;align-items:center;gap:4px}
-  .weeknav button{border:0;background:var(--paper);width:34px;height:34px;border-radius:50%;font-size:18px;cursor:pointer;color:var(--ink)}
-  .range{font-family:"Gaegu",cursive;font-size:20px;min-width:118px;text-align:center;cursor:pointer}
+  .wrap{max-width:1700px;margin:0 auto}
+
+  /* header */
+  header{display:flex;align-items:center;gap:8px;margin:2px 4px 8px}
+  h1{font-family:"Gaegu",cursive;font-weight:700;font-size:30px;margin:0;letter-spacing:.5px;white-space:nowrap;flex:1}
+  .hbtn{border:0;background:var(--paper);height:34px;padding:0 13px;border-radius:999px;font:inherit;font-size:14px;color:var(--ink);cursor:pointer;
+    box-shadow:0 1px 2px rgba(0,0,0,.08);white-space:nowrap}
+  .hbtn.dark{background:var(--ink);color:#fff}
+  .hbtn:disabled{opacity:.5}
+  .weeknav{display:flex;align-items:center;justify-content:center;gap:10px;margin:0 0 12px}
+  .weeknav .arrow{border:0;background:var(--paper);width:36px;height:36px;border-radius:50%;font-size:20px;cursor:pointer;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+  .range{font-family:"Gaegu",cursive;font-size:22px;min-width:130px;text-align:center;white-space:nowrap}
   .tabs{display:flex;background:var(--paper2);border-radius:12px;padding:4px;margin:0 2px 12px}
   .tabs button{flex:1;border:0;background:transparent;padding:9px 0;border-radius:9px;font:inherit;font-size:15px;color:var(--ink2);cursor:pointer}
   .tabs button.on{background:var(--paper);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+  @media (max-width:420px){ h1{font-size:26px} .hbtn{padding:0 11px;font-size:13px} }
+
   /* notebook */
+  .stage{position:relative}
   .book{position:relative;background:linear-gradient(135deg,#2c2c2c,#1b1b1b);border-radius:14px;padding:7px 16px 7px 7px;
     box-shadow:0 22px 40px -12px rgba(0,0,0,.45),0 3px 8px rgba(0,0,0,.25)}
   .band{position:absolute;top:-5px;bottom:-5px;right:4px;width:8px;border-radius:3px;background:linear-gradient(90deg,#111,#333 50%,#111);
     box-shadow:0 0 3px rgba(0,0,0,.5);z-index:30;pointer-events:none}
   .ribbon{position:absolute;bottom:-22px;left:38%;width:9px;height:40px;background:#9c2b2b;clip-path:polygon(0 0,100% 0,100% 100%,50% 82%,0 100%);z-index:-1}
-  .spread{position:relative;display:grid;grid-template-columns:1fr;perspective:2400px}
-  .page{position:relative;padding:14px 12px 22px;min-height:70vh;
+  .spread{position:relative;display:grid;grid-template-columns:1fr;perspective:2600px}
+  .page{position:relative;padding:14px 12px 26px;min-height:70vh;
     background:linear-gradient(90deg,rgba(0,0,0,.12),rgba(0,0,0,0) 26px),var(--paper);
     border-radius:3px 9px 9px 3px;
     box-shadow:1px 0 0 #e8e5dd,2px 0 0 #cfcac0,3px 0 0 #ebe8e1,4px 0 0 #cdc8be,5px 0 0 #e6e3db}
   .page[hidden]{display:none}
-  .pfoot{position:absolute;bottom:6px;left:0;right:0;text-align:center;font-family:"Gaegu",cursive;font-size:14px;color:#b0ada5}
+  .pfoot{position:absolute;bottom:7px;left:0;right:0;text-align:center;font-family:"Gaegu",cursive;font-size:14px;color:#b0ada5}
   .label{font-size:11px;letter-spacing:2px;color:#9a978f;text-align:center;margin-bottom:6px}
-  @media (min-width:900px){
-    .tabs{display:none}
-    .book{padding:9px 18px 9px 9px}
-    .spread{grid-template-columns:1fr 1fr}
-    .page[hidden]{display:block}
-    .page.left{border-radius:9px 2px 2px 9px;
-      background:linear-gradient(270deg,rgba(0,0,0,.14),rgba(0,0,0,0) 42px),var(--paper);
-      box-shadow:-1px 0 0 #e8e5dd,-2px 0 0 #cfcac0,-3px 0 0 #ebe8e1,-4px 0 0 #cdc8be,-5px 0 0 #e6e3db}
-    .page.right{border-radius:2px 9px 9px 2px;
-      background:linear-gradient(90deg,rgba(0,0,0,.14),rgba(0,0,0,0) 42px),var(--paper)}
-  }
-  /* page turn */
-  .ov{position:absolute;pointer-events:none;z-index:20}
-  .ov .page{position:absolute;inset:0;margin:0;min-height:0;overflow:hidden;display:block}
-  .flipper{transform-style:preserve-3d;will-change:transform}
-  .flipper .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
-  .flipper .back{transform:rotateY(180deg)}
-  .shade{position:absolute;inset:0;pointer-events:none;opacity:0;border-radius:inherit}
-  .face.front .shade{background:linear-gradient(90deg,rgba(0,0,0,.05),rgba(0,0,0,.28))}
-  .face.back .shade{background:linear-gradient(270deg,rgba(0,0,0,.05),rgba(0,0,0,.28))}
-  .blankpage{position:absolute;inset:0;background:linear-gradient(270deg,rgba(0,0,0,.12),rgba(0,0,0,0) 26px),var(--paper);border-radius:9px 3px 3px 9px}
+
+  /* A4 spread mode: each page is exactly 210×297 (794×1123 px), scaled to fit */
+  .a4 .book{padding:9px 18px 9px 9px;width:max-content;transform-origin:0 0}
+  .a4 .tabs{display:none}
+  .a4 .spread{grid-template-columns:794px 794px}
+  .a4 .page{width:794px;height:1123px;min-height:0;padding:44px 46px 50px;display:flex;flex-direction:column;overflow:hidden}
+  .a4 .page[hidden]{display:flex}
+  .a4 .page.left{border-radius:9px 2px 2px 9px;
+    background:linear-gradient(270deg,rgba(0,0,0,.14),rgba(0,0,0,0) 46px),var(--paper);
+    box-shadow:-1px 0 0 #e8e5dd,-2px 0 0 #cfcac0,-3px 0 0 #ebe8e1,-4px 0 0 #cdc8be,-5px 0 0 #e6e3db}
+  .a4 .page.right{border-radius:2px 9px 9px 2px;
+    background:linear-gradient(90deg,rgba(0,0,0,.14),rgba(0,0,0,0) 46px),var(--paper)}
+  .a4 .pfoot{bottom:18px;font-size:16px}
+  .a4 .label{font-size:12px;margin-bottom:10px}
+  .a4 #days, .a4 .days{flex:1;display:flex;flex-direction:column;min-height:0}
+  .a4 .day{flex:1;min-height:0;grid-template-columns:70px 1fr;grid-template-rows:minmax(0,1fr)}
+  .a4 .dnum{font-size:46px}
+  .a4 .day textarea, .a4 .day .ta{height:auto !important;min-height:0;align-self:stretch;overflow:hidden;margin:8px 0}
+  .a4 .day textarea{overflow:auto}
+  .a4 .trackBody{flex:1;min-height:0;overflow:auto}
+  .a4 .tablewrap{height:100%;margin:0}
+  .a4 table{height:100%}
+  .a4 .hn{min-height:0;font-size:19px}
+  .a4 td.cell{height:auto}
+  .a4 th{height:36px}
+  .a4 tr.sum td{height:30px}
+  /* export: flat pages for the PDF */
+  .export{position:absolute;left:-30000px;top:0}
+  .export .page{border-radius:0 !important;box-shadow:none !important;margin-bottom:20px}
 
   /* diary */
   .day{display:grid;grid-template-columns:52px 1fr;border-top:1px solid var(--line)}
@@ -70,10 +85,12 @@
   .dname{font-size:12px;color:var(--ink2)}
   .dnum{font-family:"Gaegu",cursive;font-weight:700;font-size:38px;line-height:1}
   .day.today .dnum{background:linear-gradient(transparent 55%,var(--accent) 55%);display:inline-block;padding:0 2px}
-  textarea{width:100%;border:0;outline:0;resize:none;background:transparent;font-family:"Gaegu",cursive;font-size:20px;color:var(--ink);
-    line-height:30px;min-height:90px;padding:0 4px;margin:4px 0 6px;
+  textarea, .ta{width:100%;border:0;outline:0;resize:none;background:transparent;font-family:"Gaegu",cursive;font-size:20px;color:var(--ink);
+    line-height:30px;min-height:90px;padding:0 4px;margin:4px 0 6px;white-space:pre-wrap;word-break:break-word;
     background-image:repeating-linear-gradient(transparent 0 29px,var(--rule) 29px 30px);background-attachment:local}
   textarea::placeholder{color:#c3c0b8}
+  .flash{animation:flash 1.4s ease}
+  @keyframes flash{0%,100%{background-color:transparent}25%{background-color:rgba(233,225,201,.7)}}
 
   /* tracker */
   .tablewrap{overflow-x:auto;margin:0 -4px}
@@ -88,7 +105,7 @@
   .hn{display:flex;align-items:center;gap:6px;font-family:"Gaegu",cursive;font-size:18px;min-height:34px}
   .dot{width:13px;height:13px;border-radius:50%;background:var(--ink);flex:none}
   .today-col{background:var(--today)}
-  td.cell{cursor:pointer;user-select:none;height:34px;font-family:"Gaegu",cursive;font-size:22px;line-height:1}
+  td.cell{cursor:pointer;user-select:none;-webkit-user-select:none;height:34px;font-family:"Gaegu",cursive;font-size:22px;line-height:1}
   td.cell:active{background:var(--accent)}
   .mk-o::after{content:"";display:inline-block;width:15px;height:15px;border:1.8px solid var(--ink);border-radius:50%}
   .mk-t::after{content:"△";font-size:21px}
@@ -98,10 +115,12 @@
   .legend span{display:inline-flex;align-items:center;gap:4px}
   .legend i{font-style:normal;display:inline-block;width:18px;text-align:center;font-family:"Gaegu",cursive;font-size:18px}
   .legend i.o::after{content:"";display:inline-block;width:11px;height:11px;border:1.6px solid var(--ink);border-radius:50%}
+  .export .hint{display:none}
 
   .toolbar{display:flex;justify-content:space-between;align-items:center;margin:2px 0 8px}
   .btn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font:inherit;font-size:13px;color:var(--ink);cursor:pointer}
   .btn.dark{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .export .btn{visibility:hidden}
   .edit-row{display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid var(--line)}
   .edit-row input{flex:1;border:0;background:transparent;font-family:"Gaegu",cursive;font-size:19px;outline:0;padding:4px;min-width:0}
   .edit-row input:focus{background:#fff;border-radius:6px}
@@ -109,55 +128,79 @@
   .ib:active{background:var(--paper2)}
   .add{display:flex;gap:6px;margin-top:10px}
   .add input{flex:1;border:1px solid var(--line);border-radius:10px;padding:9px 10px;font:inherit;font-size:15px;background:#fff;min-width:0}
-  .status{font-size:11px;color:#9a978f;text-align:center;margin-top:14px;min-height:14px}
+  .status{font-size:11px;color:#8f8b82;text-align:center;margin-top:30px;min-height:14px}
   .empty{padding:20px 6px;text-align:center;color:var(--ink2);font-size:14px}
+
+  /* page turn */
+  .ov{position:absolute;pointer-events:none;z-index:20}
+  .ov > .page{position:absolute;inset:0;margin:0;min-height:0;overflow:hidden;width:100%;height:100%}
+  .cast{z-index:22}
+  .flipper{z-index:25;transform-style:preserve-3d;will-change:transform}
+  .flipper .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+  .flipper .back{transform:rotateY(180deg)}
+  .shade{position:absolute;inset:0;pointer-events:none;opacity:0}
+  .face.front .shade{background:linear-gradient(90deg,rgba(0,0,0,.04),rgba(0,0,0,.30))}
+  .face.back .shade{background:linear-gradient(270deg,rgba(0,0,0,.04),rgba(0,0,0,.30))}
+  .gloss{position:absolute;inset:0;pointer-events:none;opacity:0;background:linear-gradient(90deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%)}
+  .blankpage{position:absolute;inset:0;background:linear-gradient(270deg,rgba(0,0,0,.12),rgba(0,0,0,0) 26px),var(--paper);border-radius:9px 3px 3px 9px}
+
+  /* toast */
+  .toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 20px);transform:translateX(-50%);background:var(--ink);color:#fff;
+    padding:10px 16px;border-radius:999px;font-size:14px;z-index:100;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap}
+  .toast.on{opacity:1}
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="wrap" id="wrap">
   <header>
     <h1>Weekly setup</h1>
-    <div class="weeknav">
-      <button id="prev" aria-label="지난 주">‹</button>
-      <div class="range" id="range" title="이번 주로"></div>
-      <button id="next" aria-label="다음 주">›</button>
-    </div>
+    <button class="hbtn" id="todayBtn">오늘</button>
+    <button class="hbtn dark" id="pdfBtn">PDF 저장</button>
   </header>
+  <div class="weeknav">
+    <button class="arrow" id="prev" aria-label="지난 주">‹</button>
+    <div class="range" id="range"></div>
+    <button class="arrow" id="next" aria-label="다음 주">›</button>
+  </div>
 
   <div class="tabs" role="tablist">
     <button id="tabDiary" class="on">일기</button>
     <button id="tabTrack">습관 체크</button>
   </div>
 
+  <div class="stage" id="stage">
   <div class="book" id="book">
-  <div class="band"></div><div class="ribbon"></div>
-  <div class="spread" id="spread">
-    <section class="page left" id="diaryPage">
-      <div class="label">DIARY</div>
-      <div id="days"></div>
-      <div class="pfoot" data-foot></div>
-    </section>
-    <section class="page right" id="trackPage" hidden>
-      <div class="toolbar">
-        <div class="label" style="margin:0;text-align:left">DATUM / DATE</div>
-        <button class="btn" id="editBtn">목록 편집</button>
-      </div>
-      <div id="trackBody"></div>
-      <div class="legend">
-        <span><i class="o"></i>했어요</span><span><i>△</i>조금</span><span><i>/</i>못 했어요</span><span style="color:#aaa">칸을 누를 때마다 바뀌어요</span>
-      </div>
-      <div class="pfoot" data-foot></div>
-    </section>
+    <div class="band"></div><div class="ribbon"></div>
+    <div class="spread" id="spread">
+      <section class="page left" id="diaryPage">
+        <div class="label">DIARY</div>
+        <div class="days" id="days"></div>
+        <div class="pfoot" data-foot></div>
+      </section>
+      <section class="page right" id="trackPage" hidden>
+        <div class="toolbar">
+          <div class="label" style="margin:0;text-align:left">DATUM / DATE</div>
+          <button class="btn" id="editBtn">목록 편집</button>
+        </div>
+        <div class="trackBody" id="trackBody"></div>
+        <div class="legend">
+          <span><i class="o"></i>했어요</span><span><i>△</i>조금</span><span><i>/</i>못 했어요</span><span class="hint" style="color:#aaa">칸을 누를 때마다 바뀌어요</span>
+        </div>
+        <div class="pfoot" data-foot></div>
+      </section>
+    </div>
   </div>
   </div>
   <div class="status" id="status"></div>
 </div>
+<div class="toast" id="toast"></div>
 
 <script>
 (function(){
   const DEFAULT_HABITS = ["일찍 일어나기","아침 요가하기","기상 직후 샤워","저녁 요가하기","유산소 운동하기","산책하기","한 군데 청소하기","집안일하기","컨텐츠 기획하기","컨텐츠 제작하기","컨텐츠 발행하기","원고 작성하기","독서하기","필사하기","디자인 공부하기","언어 공부하기","일기쓰기","기록하기","브랜드 연구하기","SNS 관리하기","갤러리 정리하기","바른 자세","정각에 물 마시기","쉴 땐 푹 쉬기","한 번에 한 가지","몸 상태 체크","저소비 실천","저당 실천","정각에 체크하기","게임 1시간 이내"];
   const DAYS = ["월","화","수","목","금","토","일"];
   const CYCLE = ["","o","t","x"];
+  const A4W = 794, A4H = 1123;
   const $ = id => document.getElementById(id);
 
   // ---------- storage ----------
@@ -196,19 +239,21 @@
     return local;
   }
   function setStatus(t){ $("status").textContent = t; }
+  let toastT;
+  function toast(t, ms){ const el = $("toast"); el.textContent = t; el.classList.add("on"); clearTimeout(toastT); if (ms !== 0) toastT = setTimeout(()=>el.classList.remove("on"), ms||2200); }
 
   // ---------- dates ----------
   const pad = n => String(n).padStart(2,"0");
   const ymd = d => d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
   function mondayOf(d){ const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); const w = (x.getDay()+6)%7; x.setDate(x.getDate()-w); return x; }
-  const thisMonday = mondayOf(new Date());
-  let monday = new Date(thisMonday);
+  const currentMonday = () => mondayOf(new Date());
+  let monday = currentMonday();
   const weekKey = () => "w-" + ymd(monday);
   const dayDate = i => { const d = new Date(monday); d.setDate(d.getDate()+i); return d; };
   const todayIdx = () => { const t = ymd(new Date()); for (let i=0;i<7;i++) if (ymd(dayDate(i))===t) return i; return -1; };
 
   // ---------- state ----------
-  let habits = null;           // [{id,name}]
+  let habits = null;
   let week = {diary:{}, marks:{}};
   let editing = false;
   let tab = "diary";
@@ -218,24 +263,41 @@
   let diaryTimer = null, markTimer = null;
   function saveWeekSoon(which){
     const k = weekKey(), data = week;
-    if (which === "diary"){ clearTimeout(diaryTimer); diaryTimer = setTimeout(()=>save(k, data), 700); }
-    else { clearTimeout(markTimer); markTimer = setTimeout(()=>save(k, data), 350); }
+    if (which === "diary"){ clearTimeout(diaryTimer); diaryTimer = setTimeout(()=>{ diaryTimer = null; save(k, data); }, 700); }
+    else { clearTimeout(markTimer); markTimer = setTimeout(()=>{ markTimer = null; save(k, data); }, 350); }
   }
   function flushWeekNow(){
     if (diaryTimer || markTimer){ clearTimeout(diaryTimer); clearTimeout(markTimer); diaryTimer = markTimer = null; save(weekKey(), week); }
   }
   const saveHabits = () => save("habits", {list: habits});
 
+  // ---------- layout: A4 spread on wide screens ----------
+  const isSpread = () => $("wrap").classList.contains("a4");
+  let scale = 1;
+  function layout(){
+    const book = $("book"), stage = $("stage");
+    const wide = window.innerWidth >= 900;
+    $("wrap").classList.toggle("a4", wide);
+    if (!wide){ book.style.transform = ""; stage.style.height = ""; scale = 1; return; }
+    const bw = book.offsetWidth, bh = book.offsetHeight;
+    const avail = stage.clientWidth;
+    scale = Math.min(1, avail / bw);
+    const x = Math.max(0, (avail - bw*scale) / 2);
+    book.style.transform = `translateX(${x}px) scale(${scale})`;
+    stage.style.height = (bh*scale + 26) + "px";
+  }
+  let rT; window.addEventListener("resize", ()=>{ clearTimeout(rT); rT = setTimeout(()=>{ layout(); renderDiary(); }, 120); });
+
   // ---------- render ----------
   function renderRange(){
     const s = dayDate(0), e = dayDate(6);
     $("range").textContent = (s.getMonth()+1)+"."+s.getDate()+" – "+(e.getMonth()+1)+"."+e.getDate();
     const th = new Date(s); th.setDate(th.getDate()+3);
-    const y1 = new Date(th.getFullYear(),0,4);
-    const wn = 1 + Math.round(((th - y1)/864e5 - 3 + ((y1.getDay()+6)%7)) / 7);
+    const j4 = new Date(th.getFullYear(),0,4);
+    const wn = 1 + Math.round(((th - j4)/864e5 - 3 + ((j4.getDay()+6)%7)) / 7);
     document.querySelectorAll("[data-foot]").forEach(f=>{ f.textContent = "— " + th.getFullYear() + " · " + wn + "주 —"; });
   }
-  function grow(t){ t.style.height = "auto"; t.style.height = Math.max(90, t.scrollHeight) + "px"; }
+  function grow(t){ if (isSpread()) { t.style.height = ""; return; } t.style.height = "auto"; t.style.height = Math.max(90, t.scrollHeight) + "px"; }
   function renderDiary(){
     const box = $("days"); box.innerHTML = "";
     const ti = todayIdx();
@@ -243,6 +305,7 @@
       const d = dayDate(i);
       const row = document.createElement("div");
       row.className = "day" + (i===ti ? " today" : "");
+      row.dataset.i = i;
       row.innerHTML = '<div class="dlabel"><div class="dname">'+DAYS[i]+'요일</div><div class="dnum">'+d.getDate()+'</div></div>';
       const ta = document.createElement("textarea");
       ta.placeholder = i===ti ? "오늘 하루는 어땠나요?" : "";
@@ -273,15 +336,20 @@
       h += '</tr>';
     });
     h += '<tr class="sum"><td class="name" style="padding-left:4px">달성률</td>';
-    for (let i=0;i<7;i++){
-      let s = 0;
-      habits.forEach(hb=>{ const v = (week.marks[hb.id]||[])[i]; if (v==="o") s+=1; else if (v==="t") s+=.5; });
-      const any = habits.some(hb=>(week.marks[hb.id]||[])[i]);
-      h += '<td class="'+(i===ti?"today-col":"")+'">'+(any ? Math.round(s/habits.length*100)+'%' : '')+'</td>';
-    }
+    for (let i=0;i<7;i++) h += '<td class="'+(i===ti?"today-col":"")+'"></td>';
     h += '</tr></tbody></table></div>';
     box.innerHTML = h;
     box.querySelectorAll(".nm").forEach((el,idx)=>{ el.textContent = habits[idx].name; });
+    updateSums();
+  }
+  function updateSums(){
+    const row = $("trackBody").querySelector("tr.sum"); if (!row) return;
+    const cells = row.querySelectorAll("td");
+    for (let i=0;i<7;i++){
+      let s=0, any=false;
+      habits.forEach(hb=>{ const v=(week.marks[hb.id]||[])[i]; if (v) any=true; if (v==="o") s+=1; else if (v==="t") s+=.5; });
+      cells[i+1].textContent = any ? Math.round(s/habits.length*100)+"%" : "";
+    }
   }
   function renderEditor(box){
     box.innerHTML = "";
@@ -313,7 +381,7 @@
     $("diaryPage").hidden = tab!=="diary";
     $("trackPage").hidden = tab!=="track";
   }
-  function renderAll(){ renderRange(); renderDiary(); renderTracker(); renderTabs(); }
+  function renderAll(){ renderRange(); renderDiary(); renderTracker(); renderTabs(); layout(); }
 
   // ---------- events ----------
   $("trackBody").addEventListener("click", e=>{
@@ -324,36 +392,29 @@
     m[i] = next;
     td.classList.remove("mk-o","mk-t","mk-x"); if (next) td.classList.add("mk-"+next);
     saveWeekSoon("marks");
-    clearTimeout(td._t); td._t = setTimeout(()=>{ if (!editing) updateSums(); }, 50);
+    updateSums();
   });
-  function updateSums(){
-    const row = $("trackBody").querySelector("tr.sum"); if (!row) return;
-    const cells = row.querySelectorAll("td");
-    for (let i=0;i<7;i++){
-      let s=0, any=false;
-      habits.forEach(hb=>{ const v=(week.marks[hb.id]||[])[i]; if (v) any=true; if (v==="o") s+=1; else if (v==="t") s+=.5; });
-      cells[i+1].textContent = any ? Math.round(s/habits.length*100)+"%" : "";
-    }
-  }
   $("editBtn").onclick = ()=>{ editing = !editing; renderTracker(); };
   $("tabDiary").onclick = ()=>{ tab="diary"; renderTabs(); };
   $("tabTrack").onclick = ()=>{ tab="track"; renderTabs(); };
+
   // ---------- page turning ----------
   let flipping = false;
   const reduceMotion = () => { try{ return matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(e){ return false; } };
-  const isSpread = () => { try{ return matchMedia("(min-width:900px)").matches; }catch(e){ return false; } };
-  function snap(page){
+  // copy of a page; textareas become plain text blocks when `flat`
+  function snap(page, flat){
     const c = page.cloneNode(true);
     c.removeAttribute("id"); c.hidden = false;
     c.querySelectorAll("[id]").forEach(e=>e.removeAttribute("id"));
     const src = page.querySelectorAll("textarea"), dst = c.querySelectorAll("textarea");
-    dst.forEach((t,i)=>{ t.value = src[i].value; t.style.height = src[i].style.height; });
+    dst.forEach((t,i)=>{
+      if (flat){ const d = document.createElement("div"); d.className = "ta"; d.textContent = src[i].value; t.replaceWith(d); }
+      else { t.value = src[i].value; t.style.height = src[i].style.height; t.scrollTop = src[i].scrollTop; }
+    });
     return c;
   }
-  function rectIn(el){
-    const s = $("spread").getBoundingClientRect(), r = el.getBoundingClientRect();
-    return {left:r.left-s.left, top:r.top-s.top, width:r.width, height:r.height};
-  }
+  // position in the spread's own (unscaled) coordinates
+  const rectOf = el => ({left:el.offsetLeft, top:el.offsetTop, width:el.offsetWidth, height:el.offsetHeight});
   function box(r, cls){
     const d = document.createElement("div"); d.className = "ov " + (cls||"");
     Object.assign(d.style, {left:r.left+"px", top:r.top+"px", width:r.width+"px", height:r.height+"px"});
@@ -361,72 +422,98 @@
   }
   function face(cls, content){
     const f = document.createElement("div"); f.className = "face " + cls;
-    f.appendChild(content); const sh = document.createElement("div"); sh.className = "shade"; f.appendChild(sh);
+    f.appendChild(content);
+    const sh = document.createElement("div"); sh.className = "shade"; f.appendChild(sh);
+    const gl = document.createElement("div"); gl.className = "gloss"; f.appendChild(gl);
     return f;
   }
   function blank(){ const b = document.createElement("div"); b.className = "blankpage"; return b; }
+  function cast(r, side){ // soft shadow thrown from the spine onto a page
+    const c = box(r, "cast");
+    c.style.background = `linear-gradient(${side==="fromLeft"?90:270}deg, rgba(0,0,0,.38), rgba(0,0,0,.12) 35%, rgba(0,0,0,0) 75%)`;
+    c.style.opacity = 0;
+    return c;
+  }
+  function runFlip(o){ // o: flip, from, to, dur, reveal (cast el), land (cast el)
+    const fs = o.flip.querySelector(".front .shade"), bs = o.flip.querySelector(".back .shade");
+    const fg = o.flip.querySelector(".front .gloss"), bg = o.flip.querySelector(".back .gloss");
+    const t0 = performance.now();
+    const ease = t => t<.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2; // ease-in-out cubic
+    return new Promise(res=>{
+      function frame(now){
+        const t = Math.min(1, (now - t0) / o.dur);
+        const e = ease(t);
+        const a = o.from + (o.to - o.from) * e;
+        const p = Math.abs(a) / 180;                 // 0 = flat on right, 1 = flat on left
+        const lift = Math.sin(Math.PI * p);          // 0 flat, 1 standing up
+        o.flip.style.transform = `rotateY(${a}deg)`;
+        fs.style.opacity = Math.min(1, p*2) * .95;
+        bs.style.opacity = Math.min(1, (1-p)*2) * .95;
+        fg.style.opacity = bg.style.opacity = lift * .6;
+        fg.style.transform = `translateX(${(p-.25)*120}%)`;
+        bg.style.transform = `translateX(${(.75-p)*120}%)`;
+        if (o.reveal) o.reveal.style.opacity = (1-p) * lift * 1.6;
+        if (o.land) o.land.style.opacity = p * lift * 1.6;
+        if (t < 1) requestAnimationFrame(frame); else res();
+      }
+      requestAnimationFrame(frame);
+    });
+  }
 
-  // dir: 1 = next (turn right page to the left), -1 = previous
+  // dir: 1 = next week, -1 = previous week
   async function turnPage(dir, change){
     if (reduceMotion()){ await change(); return; }
     const spread = isSpread();
     const L = $("diaryPage"), R = $("trackPage");
     const vis = spread ? null : (tab==="diary" ? L : R);
-    const old = spread ? {L:snap(L), R:snap(R), rL:rectIn(L), rR:rectIn(R)} : {P:snap(vis), rP:rectIn(vis)};
-    // freeze the old look while new data loads
+    const old = spread ? {L:snap(L), R:snap(R), rL:rectOf(L), rR:rectOf(R)} : {P:snap(vis), rP:rectOf(vis)};
     const hold = spread ? [box(old.rL), box(old.rR)] : [box(old.rP)];
     if (spread){ hold[0].appendChild(old.L); hold[1].appendChild(old.R); } else hold[0].appendChild(old.P);
     await change();
-    let flip, under = [], from, to, origin;
+    let flip, under = [], from, to, origin, reveal = null, land = null;
     if (spread){
       const nL = snap(L), nR = snap(R);
       if (dir > 0){
         under = [hold[0]]; hold[1].remove();
+        reveal = cast(old.rR, "fromLeft"); land = cast(old.rL, "fromRight");
         flip = box(old.rR, "flipper"); origin = "left center";
         flip.append(face("front", old.R), face("back", nL));
         from = 0; to = -180;
       } else {
         under = [hold[1]]; hold[0].remove();
+        reveal = cast(old.rL, "fromRight"); land = cast(old.rR, "fromLeft");
         flip = box(old.rL, "flipper"); origin = "right center";
         flip.append(face("front", old.L), face("back", nR));
         from = 0; to = 180;
       }
     } else {
+      const r = rectOf(vis);
       if (dir > 0){
         hold[0].remove();
+        reveal = cast(r, "fromLeft");
         flip = box(old.rP, "flipper"); origin = "left center";
         flip.append(face("front", old.P), face("back", blank()));
         from = 0; to = -180;
       } else {
         under = [hold[0]];
-        const nP = snap(vis);
-        flip = box(rectIn(vis), "flipper"); origin = "left center";
-        flip.append(face("front", nP), face("back", blank()));
+        land = null; reveal = cast(old.rP, "fromLeft");
+        flip = box(r, "flipper"); origin = "left center";
+        flip.append(face("front", snap(vis)), face("back", blank()));
         from = -180; to = 0;
       }
     }
     flip.style.transformOrigin = origin;
-    flip.style.zIndex = 25;
-    const dur = spread ? 900 : 720;
-    const ease = "cubic-bezier(.42,.04,.3,1)";
-    const anim = flip.animate([
-      {transform:`rotateY(${from}deg)`},
-      {transform:`rotateY(${(from+to)/2}deg) scale(1.015)`, offset:.5},
-      {transform:`rotateY(${to}deg)`}
-    ], {duration:dur, easing:ease, fill:"forwards"});
-    const fs = flip.querySelector(".front .shade"), bs = flip.querySelector(".back .shade");
-    const fwd = Math.abs(to) > Math.abs(from);
-    fs.animate([{opacity: fwd?0:.9},{opacity:.9, offset:.5},{opacity: fwd?.9:0}], {duration:dur, easing:ease, fill:"forwards"});
-    bs.animate([{opacity: fwd?.9:0},{opacity:.9, offset:.5},{opacity: fwd?0:.9}], {duration:dur, easing:ease, fill:"forwards"});
-    try{ await anim.finished; }catch(e){}
-    flip.remove(); under.forEach(u=>u.remove());
+    flip.style.transform = `rotateY(${from}deg)`;
+    // for "previous" on a phone the page lands on top of the old one, so the shadow grows as it comes down
+    const o = {flip, from, to, dur: spread ? 1150 : 850, reveal, land};
+    if (!spread && dir < 0){ o.reveal = null; o.land = reveal; }
+    await runFlip(o);
+    flip.remove(); under.forEach(u=>u.remove()); if (reveal) reveal.remove(); if (land) land.remove();
   }
 
-  async function goWeek(delta){
-    if (flipping) return;
-    let target = new Date(monday);
-    if (delta===0) target = new Date(thisMonday); else target.setDate(target.getDate()+delta*7);
-    if (ymd(target) === ymd(monday)) return;
+  async function goToMonday(target){
+    if (flipping) return false;
+    if (ymd(target) === ymd(monday)) return true;
     const dir = target > monday ? 1 : -1;
     flushWeekNow();
     flipping = true;
@@ -436,18 +523,32 @@
         renderRange();
         const k = weekKey();
         const w = await load(k);
-        if (k !== weekKey()) return;
-        week = normWeek(w);
+        week = normWeek(k === weekKey() ? w : null);
         renderDiary(); renderTracker();
       });
     } finally {
       flipping = false;
       document.querySelectorAll("#spread > .ov").forEach(o=>o.remove());
     }
+    return true;
   }
-  $("prev").onclick = ()=>goWeek(-1);
-  $("next").onclick = ()=>goWeek(1);
-  $("range").onclick = ()=>goWeek(0);
+  function shift(delta){ const t = new Date(monday); t.setDate(t.getDate()+delta*7); return goToMonday(t); }
+  $("prev").onclick = ()=>shift(-1);
+  $("next").onclick = ()=>shift(1);
+  async function goToday(){
+    const ok = await goToMonday(currentMonday());
+    if (!ok) return;
+    const ti = todayIdx();
+    if (!isSpread() && tab !== "diary"){ tab = "diary"; renderTabs(); }
+    const row = $("days").querySelector('.day[data-i="'+ti+'"]');
+    if (row){
+      row.scrollIntoView({behavior:"smooth", block:"center"});
+      const ta = row.querySelector("textarea");
+      if (ta){ ta.classList.remove("flash"); void ta.offsetWidth; ta.classList.add("flash"); }
+    }
+  }
+  $("todayBtn").onclick = goToday;
+  $("range").onclick = goToday;
 
   // swipe to turn pages
   let sx = null, sy = 0, st = 0;
@@ -461,20 +562,74 @@
     if (sx===null) return;
     const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
     sx = null;
-    if (Math.abs(dx) > 70 && Math.abs(dy) < 50 && Date.now()-st < 700) goWeek(dx < 0 ? 1 : -1);
+    if (Math.abs(dx) > 70 && Math.abs(dy) < 50 && Date.now()-st < 700) shift(dx < 0 ? 1 : -1);
   }, {passive:true});
+
+  // ---------- PDF (two A4 pages) ----------
+  function loadScript(src){
+    return new Promise((res, rej)=>{
+      if (document.querySelector('script[src="'+src+'"]')) return res();
+      const s = document.createElement("script"); s.src = src; s.onload = res; s.onerror = ()=>rej(new Error("load")); document.head.appendChild(s);
+    });
+  }
+  async function makePdf(){
+    if (editing){ editing = false; renderTracker(); }
+    flushWeekNow();
+    await Promise.all([
+      loadScript("https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"),
+      loadScript("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js")
+    ]);
+    try{ await document.fonts.ready; }catch(e){}
+    const host = document.createElement("div");
+    host.className = "export a4";
+    const pages = [snap($("diaryPage"), true), snap($("trackPage"), true)];
+    pages.forEach(p=>host.appendChild(p));
+    document.body.appendChild(host);
+    try{
+      const pdf = new window.jspdf.jsPDF({orientation:"portrait", unit:"mm", format:"a4", compress:true});
+      for (let i=0;i<pages.length;i++){
+        const canvas = await window.html2canvas(pages[i], {scale:2, backgroundColor:"#f7f6f2", width:A4W, height:A4H, windowWidth:A4W*2+100, scrollX:-window.scrollX, scrollY:-window.scrollY, logging:false});
+        if (i) pdf.addPage("a4", "portrait");
+        pdf.addImage(canvas.toDataURL("image/jpeg", .92), "JPEG", 0, 0, 210, 297);
+      }
+      return pdf.output("blob");
+    } finally { host.remove(); }
+  }
+  async function savePdf(){
+    const b = $("pdfBtn"); if (b.disabled) return;
+    b.disabled = true; toast("PDF 만드는 중…", 0);
+    let blob;
+    try{ blob = await makePdf(); }
+    catch(e){ b.disabled = false; toast("PDF를 만들지 못했어요. 인터넷 연결을 확인해 주세요", 3500); return; }
+    const name = "weekly-" + ymd(monday) + ".pdf";
+    try{
+      const dl = window.claude && window.claude.use ? await window.claude.use("downloads") : null;
+      if (dl){
+        try{ await dl.save({filename:name, data:blob}); toast("PDF를 저장했어요"); }
+        catch(e){ toast(e && e.code === "declined" ? "저장을 취소했어요" : "이 화면에서는 저장할 수 없어요", 3000); }
+      } else {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a"); a.href = url; a.download = name;
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(()=>URL.revokeObjectURL(url), 30000);
+        toast("PDF를 저장했어요");
+      }
+    } finally { b.disabled = false; }
+  }
+  $("pdfBtn").onclick = savePdf;
+
   window.addEventListener("pagehide", flushWeekNow);
   document.addEventListener("visibilitychange", ()=>{ if (document.hidden) flushWeekNow(); });
-
   function normWeek(w){ w = w || {}; return {diary: w.diary || {}, marks: w.marks || {}}; }
 
   // ---------- init ----------
   habits = (LS.get("habits")||{}).list || defaultHabits();
   week = normWeek(LS.get(weekKey()));
   renderAll();
+  try{ document.fonts.ready.then(layout); }catch(e){}
 
   (async function connect(){
-    if (!window.claude || !window.claude.use){ setStatus("이 기기에만 저장돼요"); return; }
+    if (!window.claude || !window.claude.use){ setStatus("이 브라우저에 저장돼요"); return; }
     const timer = setTimeout(()=>setStatus("이 기기에만 저장되고 있어요"), 10000);
     try{
       db = await window.claude.use("db");
@@ -489,7 +644,7 @@
     const hadCloudHabits = h && Array.isArray(h.list);
     if (hadCloudHabits) habits = h.list;
     if (k === weekKey() && w) week = normWeek(w);
-    if (!diaryTimer && !markTimer) renderAll();
+    if (!diaryTimer && !markTimer && !flipping) renderAll();
     if (!hadCloudHabits) saveHabits();
     setStatus("계정에 저장돼요 · 어느 기기에서든 이어서 쓸 수 있어요");
   })();
