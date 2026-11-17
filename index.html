@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Weekly setup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Gowun+Dodum&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f7f6f2; --paper2:#efede7; --ink:#1d1d1f; --ink2:#55534e; --line:#d9d6ce; --rule:#e3e0d8;
+    --accent:#e9e1c9; --today:#fbf3d6;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;background:#e6e4de;color:var(--ink);font-family:"Gowun Dodum",system-ui,sans-serif}
+  body{padding:calc(env(safe-area-inset-top) + 12px) 10px calc(env(safe-area-inset-bottom) + 24px)}
+  .hand{font-family:"Gaegu",cursive}
+  .wrap{max-width:1100px;margin:0 auto}
+  header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:4px 4px 12px}
+  h1{font-family:"Gaegu",cursive;font-weight:700;font-size:30px;margin:0;letter-spacing:.5px}
+  .weeknav{display:flex;align-items:center;gap:4px}
+  .weeknav button{border:0;background:var(--paper);width:34px;height:34px;border-radius:50%;font-size:18px;cursor:pointer;color:var(--ink)}
+  .range{font-family:"Gaegu",cursive;font-size:20px;min-width:118px;text-align:center;cursor:pointer}
+  .tabs{display:flex;background:var(--paper2);border-radius:12px;padding:4px;margin:0 2px 12px}
+  .tabs button{flex:1;border:0;background:transparent;padding:9px 0;border-radius:9px;font:inherit;font-size:15px;color:var(--ink2);cursor:pointer}
+  .tabs button.on{background:var(--paper);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+  .spread{display:grid;grid-template-columns:1fr;gap:12px}
+  .page{background:var(--paper);border-radius:6px;box-shadow:0 1px 0 rgba(0,0,0,.04),0 6px 18px rgba(0,0,0,.06);padding:14px 12px 18px;position:relative}
+  .page[hidden]{display:none}
+  .label{font-size:11px;letter-spacing:2px;color:#9a978f;text-align:center;margin-bottom:6px}
+  @media (min-width:900px){
+    .tabs{display:none}
+    .spread{grid-template-columns:1fr 1.15fr;gap:0}
+    .page[hidden]{display:block}
+    #diaryPage{border-radius:6px 0 0 6px;border-right:1px solid var(--line)}
+    #trackPage{border-radius:0 6px 6px 0}
+  }
+
+  /* diary */
+  .day{display:grid;grid-template-columns:52px 1fr;border-top:1px solid var(--line)}
+  .day:first-of-type{border-top:0}
+  .dlabel{padding:6px 0 0 2px}
+  .dname{font-size:12px;color:var(--ink2)}
+  .dnum{font-family:"Gaegu",cursive;font-weight:700;font-size:38px;line-height:1}
+  .day.today .dnum{background:linear-gradient(transparent 55%,var(--accent) 55%);display:inline-block;padding:0 2px}
+  textarea{width:100%;border:0;outline:0;resize:none;background:transparent;font-family:"Gaegu",cursive;font-size:20px;color:var(--ink);
+    line-height:30px;min-height:90px;padding:0 4px;margin:4px 0 6px;
+    background-image:repeating-linear-gradient(transparent 0 29px,var(--rule) 29px 30px);background-attachment:local}
+  textarea::placeholder{color:#c3c0b8}
+
+  /* tracker */
+  .tablewrap{overflow-x:auto;margin:0 -4px}
+  table{border-collapse:collapse;width:100%;min-width:340px}
+  th,td{border:1px solid var(--line);padding:0;text-align:center}
+  th{font-family:"Gaegu",cursive;font-size:19px;font-weight:400;height:34px;width:12%}
+  th.name{width:auto;border-left:0;border-top:0}
+  tr td:first-child{border-left:0}
+  tr:last-child td{border-bottom:0}
+  th:last-child,td:last-child{border-right:0}
+  td.name{text-align:left;padding:0 4px 0 2px;white-space:nowrap}
+  .hn{display:flex;align-items:center;gap:6px;font-family:"Gaegu",cursive;font-size:18px;min-height:34px}
+  .dot{width:13px;height:13px;border-radius:50%;background:var(--ink);flex:none}
+  .today-col{background:var(--today)}
+  td.cell{cursor:pointer;user-select:none;height:34px;font-family:"Gaegu",cursive;font-size:22px;line-height:1}
+  td.cell:active{background:var(--accent)}
+  .mk-o::after{content:"";display:inline-block;width:15px;height:15px;border:1.8px solid var(--ink);border-radius:50%}
+  .mk-t::after{content:"△";font-size:21px}
+  .mk-x::after{content:"/";font-size:24px;color:var(--ink2)}
+  tr.sum td{font-size:12px;color:var(--ink2);height:30px;border-top:1.5px solid #bfbcb3}
+  .legend{display:flex;justify-content:center;gap:14px;font-size:12px;color:var(--ink2);margin:10px 0 2px;flex-wrap:wrap}
+  .legend span{display:inline-flex;align-items:center;gap:4px}
+  .legend i{font-style:normal;display:inline-block;width:18px;text-align:center;font-family:"Gaegu",cursive;font-size:18px}
+  .legend i.o::after{content:"";display:inline-block;width:11px;height:11px;border:1.6px solid var(--ink);border-radius:50%}
+
+  .toolbar{display:flex;justify-content:space-between;align-items:center;margin:2px 0 8px}
+  .btn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font:inherit;font-size:13px;color:var(--ink);cursor:pointer}
+  .btn.dark{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .edit-row{display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid var(--line)}
+  .edit-row input{flex:1;border:0;background:transparent;font-family:"Gaegu",cursive;font-size:19px;outline:0;padding:4px;min-width:0}
+  .edit-row input:focus{background:#fff;border-radius:6px}
+  .ib{border:0;background:transparent;width:30px;height:30px;font-size:16px;color:var(--ink2);cursor:pointer;border-radius:50%}
+  .ib:active{background:var(--paper2)}
+  .add{display:flex;gap:6px;margin-top:10px}
+  .add input{flex:1;border:1px solid var(--line);border-radius:10px;padding:9px 10px;font:inherit;font-size:15px;background:#fff;min-width:0}
+  .status{font-size:11px;color:#9a978f;text-align:center;margin-top:14px;min-height:14px}
+  .empty{padding:20px 6px;text-align:center;color:var(--ink2);font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Weekly setup</h1>
+    <div class="weeknav">
+      <button id="prev" aria-label="지난 주">‹</button>
+      <div class="range" id="range" title="이번 주로"></div>
+      <button id="next" aria-label="다음 주">›</button>
+    </div>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button id="tabDiary" class="on">일기</button>
+    <button id="tabTrack">습관 체크</button>
+  </div>
+
+  <div class="spread">
+    <section class="page" id="diaryPage">
+      <div class="label">DIARY</div>
+      <div id="days"></div>
+    </section>
+    <section class="page" id="trackPage" hidden>
+      <div class="toolbar">
+        <div class="label" style="margin:0;text-align:left">DATUM / DATE</div>
+        <button class="btn" id="editBtn">목록 편집</button>
+      </div>
+      <div id="trackBody"></div>
+      <div class="legend">
+        <span><i class="o"></i>했어요</span><span><i>△</i>조금</span><span><i>/</i>못 했어요</span><span style="color:#aaa">칸을 누를 때마다 바뀌어요</span>
+      </div>
+    </section>
+  </div>
+  <div class="status" id="status"></div>
+</div>
+
+<script>
+(function(){
+  const DEFAULT_HABITS = ["일찍 일어나기","아침 요가하기","기상 직후 샤워","저녁 요가하기","유산소 운동하기","산책하기","한 군데 청소하기","집안일하기","컨텐츠 기획하기","컨텐츠 제작하기","컨텐츠 발행하기","원고 작성하기","독서하기","필사하기","디자인 공부하기","언어 공부하기","일기쓰기","기록하기","브랜드 연구하기","SNS 관리하기","갤러리 정리하기","바른 자세","정각에 물 마시기","쉴 땐 푹 쉬기","한 번에 한 가지","몸 상태 체크","저소비 실천","저당 실천","정각에 체크하기","게임 1시간 이내"];
+  const DAYS = ["월","화","수","목","금","토","일"];
+  const CYCLE = ["","o","t","x"];
+  const $ = id => document.getElementById(id);
+
+  // ---------- storage ----------
+  const LS = {
+    get(k){ try{ const v = localStorage.getItem("ws:"+k); return v ? JSON.parse(v) : null; }catch(e){ return null; } },
+    set(k,v){ try{ localStorage.setItem("ws:"+k, JSON.stringify(v)); }catch(e){} }
+  };
+  let db = null, uid = null, cloudOk = false;
+  const pending = {}, busy = {};
+  function ref(key){ return db.collection("data/users/"+uid).doc(key); }
+  async function flush(key){
+    if (busy[key]) return;
+    busy[key] = true;
+    try{
+      while (pending[key]){
+        const d = pending[key]; pending[key] = null;
+        try{ await ref(key).set(d); setStatus("저장됨 ✓"); }
+        catch(e){
+          if (e && e.code === "unavailable"){ await new Promise(r=>setTimeout(r,600+Math.random()*600)); try{ await ref(key).set(d); setStatus("저장됨 ✓"); continue; }catch(_){} }
+          cloudOk = false; setStatus("이 기기에만 저장되고 있어요");
+          break;
+        }
+      }
+    } finally { busy[key] = false; }
+  }
+  function save(key, data){
+    LS.set(key, data);
+    if (cloudOk && db && uid){ pending[key] = JSON.parse(JSON.stringify(data)); setStatus("저장 중…"); flush(key); }
+  }
+  async function load(key){
+    const local = LS.get(key);
+    if (cloudOk && db && uid){
+      try{ const s = await ref(key).get(); if (s.exists){ const d = s.data(); LS.set(key, d); return JSON.parse(JSON.stringify(d)); } }
+      catch(e){}
+    }
+    return local;
+  }
+  function setStatus(t){ $("status").textContent = t; }
+
+  // ---------- dates ----------
+  const pad = n => String(n).padStart(2,"0");
+  const ymd = d => d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+  function mondayOf(d){ const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); const w = (x.getDay()+6)%7; x.setDate(x.getDate()-w); return x; }
+  const thisMonday = mondayOf(new Date());
+  let monday = new Date(thisMonday);
+  const weekKey = () => "w-" + ymd(monday);
+  const dayDate = i => { const d = new Date(monday); d.setDate(d.getDate()+i); return d; };
+  const todayIdx = () => { const t = ymd(new Date()); for (let i=0;i<7;i++) if (ymd(dayDate(i))===t) return i; return -1; };
+
+  // ---------- state ----------
+  let habits = null;           // [{id,name}]
+  let week = {diary:{}, marks:{}};
+  let editing = false;
+  let tab = "diary";
+  const newId = () => "h" + Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+  const defaultHabits = () => DEFAULT_HABITS.map((n,i)=>({id:"d"+i, name:n}));
+
+  let diaryTimer = null, markTimer = null;
+  function saveWeekSoon(which){
+    const k = weekKey(), data = week;
+    if (which === "diary"){ clearTimeout(diaryTimer); diaryTimer = setTimeout(()=>save(k, data), 700); }
+    else { clearTimeout(markTimer); markTimer = setTimeout(()=>save(k, data), 350); }
+  }
+  function flushWeekNow(){
+    if (diaryTimer || markTimer){ clearTimeout(diaryTimer); clearTimeout(markTimer); diaryTimer = markTimer = null; save(weekKey(), week); }
+  }
+  const saveHabits = () => save("habits", {list: habits});
+
+  // ---------- render ----------
+  function renderRange(){
+    const s = dayDate(0), e = dayDate(6);
+    $("range").textContent = (s.getMonth()+1)+"."+s.getDate()+" – "+(e.getMonth()+1)+"."+e.getDate();
+  }
+  function grow(t){ t.style.height = "auto"; t.style.height = Math.max(90, t.scrollHeight) + "px"; }
+  function renderDiary(){
+    const box = $("days"); box.innerHTML = "";
+    const ti = todayIdx();
+    for (let i=0;i<7;i++){
+      const d = dayDate(i);
+      const row = document.createElement("div");
+      row.className = "day" + (i===ti ? " today" : "");
+      row.innerHTML = '<div class="dlabel"><div class="dname">'+DAYS[i]+'요일</div><div class="dnum">'+d.getDate()+'</div></div>';
+      const ta = document.createElement("textarea");
+      ta.placeholder = i===ti ? "오늘 하루는 어땠나요?" : "";
+      ta.value = (week.diary && week.diary[i]) || "";
+      ta.addEventListener("input", ()=>{ week.diary[i] = ta.value; grow(ta); saveWeekSoon("diary"); });
+      row.appendChild(ta);
+      box.appendChild(row);
+      requestAnimationFrame(()=>grow(ta));
+    }
+  }
+  function renderTracker(){
+    const box = $("trackBody");
+    $("editBtn").textContent = editing ? "완료" : "목록 편집";
+    $("editBtn").classList.toggle("dark", editing);
+    if (editing){ renderEditor(box); return; }
+    if (!habits.length){ box.innerHTML = '<div class="empty">아직 습관이 없어요. ‘목록 편집’에서 추가해 보세요.</div>'; return; }
+    const ti = todayIdx();
+    let h = '<div class="tablewrap"><table><thead><tr><th class="name"></th>';
+    DAYS.forEach((d,i)=>{ h += '<th class="'+(i===ti?"today-col":"")+'">'+d+'</th>'; });
+    h += '</tr></thead><tbody>';
+    habits.forEach(hb=>{
+      const m = week.marks[hb.id] || [];
+      h += '<tr><td class="name"><div class="hn"><span class="dot"></span><span class="nm"></span></div></td>';
+      for (let i=0;i<7;i++){
+        const v = m[i] || "";
+        h += '<td class="cell '+(v?"mk-"+v:"")+(i===ti?" today-col":"")+'" data-h="'+hb.id+'" data-i="'+i+'"></td>';
+      }
+      h += '</tr>';
+    });
+    h += '<tr class="sum"><td class="name" style="padding-left:4px">달성률</td>';
+    for (let i=0;i<7;i++){
+      let s = 0;
+      habits.forEach(hb=>{ const v = (week.marks[hb.id]||[])[i]; if (v==="o") s+=1; else if (v==="t") s+=.5; });
+      const any = habits.some(hb=>(week.marks[hb.id]||[])[i]);
+      h += '<td class="'+(i===ti?"today-col":"")+'">'+(any ? Math.round(s/habits.length*100)+'%' : '')+'</td>';
+    }
+    h += '</tr></tbody></table></div>';
+    box.innerHTML = h;
+    box.querySelectorAll(".nm").forEach((el,idx)=>{ el.textContent = habits[idx].name; });
+  }
+  function renderEditor(box){
+    box.innerHTML = "";
+    habits.forEach((hb, idx)=>{
+      const r = document.createElement("div"); r.className = "edit-row";
+      r.innerHTML = '<span class="dot"></span>';
+      const inp = document.createElement("input"); inp.value = hb.name;
+      inp.addEventListener("change", ()=>{ const v = inp.value.trim(); if (v){ hb.name = v; saveHabits(); } else inp.value = hb.name; });
+      const up = btn("↑", "위로", ()=>{ if (idx>0){ [habits[idx-1],habits[idx]]=[habits[idx],habits[idx-1]]; saveHabits(); renderTracker(); } });
+      const dn = btn("↓", "아래로", ()=>{ if (idx<habits.length-1){ [habits[idx+1],habits[idx]]=[habits[idx],habits[idx+1]]; saveHabits(); renderTracker(); } });
+      const del = btn("✕", "삭제", ()=>{ habits.splice(idx,1); saveHabits(); renderTracker(); });
+      r.append(inp, up, dn, del); box.appendChild(r);
+    });
+    const add = document.createElement("form"); add.className = "add";
+    add.innerHTML = '<input placeholder="새 습관 추가 (예: 물 2L 마시기)" maxlength="40"><button class="btn dark" type="submit">추가</button>';
+    add.addEventListener("submit", e=>{
+      e.preventDefault();
+      const inp = add.querySelector("input"); const v = inp.value.trim(); if (!v) return;
+      habits.push({id:newId(), name:v}); saveHabits(); renderTracker();
+      const ni = $("trackBody").querySelector(".add input"); if (ni) ni.focus();
+    });
+    box.appendChild(add);
+  }
+  function btn(t, label, fn){ const b = document.createElement("button"); b.className="ib"; b.type="button"; b.textContent=t; b.setAttribute("aria-label",label); b.onclick=fn; return b; }
+
+  function renderTabs(){
+    $("tabDiary").classList.toggle("on", tab==="diary");
+    $("tabTrack").classList.toggle("on", tab==="track");
+    $("diaryPage").hidden = tab!=="diary";
+    $("trackPage").hidden = tab!=="track";
+  }
+  function renderAll(){ renderRange(); renderDiary(); renderTracker(); renderTabs(); }
+
+  // ---------- events ----------
+  $("trackBody").addEventListener("click", e=>{
+    const td = e.target.closest("td.cell"); if (!td) return;
+    const id = td.dataset.h, i = +td.dataset.i;
+    const m = week.marks[id] || (week.marks[id] = ["","","","","","",""]);
+    const next = CYCLE[(CYCLE.indexOf(m[i]||"")+1) % CYCLE.length];
+    m[i] = next;
+    td.classList.remove("mk-o","mk-t","mk-x"); if (next) td.classList.add("mk-"+next);
+    saveWeekSoon("marks");
+    clearTimeout(td._t); td._t = setTimeout(()=>{ if (!editing) updateSums(); }, 50);
+  });
+  function updateSums(){
+    const row = $("trackBody").querySelector("tr.sum"); if (!row) return;
+    const cells = row.querySelectorAll("td");
+    for (let i=0;i<7;i++){
+      let s=0, any=false;
+      habits.forEach(hb=>{ const v=(week.marks[hb.id]||[])[i]; if (v) any=true; if (v==="o") s+=1; else if (v==="t") s+=.5; });
+      cells[i+1].textContent = any ? Math.round(s/habits.length*100)+"%" : "";
+    }
+  }
+  $("editBtn").onclick = ()=>{ editing = !editing; renderTracker(); };
+  $("tabDiary").onclick = ()=>{ tab="diary"; renderTabs(); };
+  $("tabTrack").onclick = ()=>{ tab="track"; renderTabs(); };
+  async function goWeek(delta){
+    flushWeekNow();
+    if (delta===0) monday = new Date(thisMonday); else monday.setDate(monday.getDate()+delta*7);
+    renderRange();
+    const k = weekKey();
+    const w = await load(k);
+    if (k !== weekKey()) return;
+    week = normWeek(w);
+    renderDiary(); renderTracker();
+  }
+  $("prev").onclick = ()=>goWeek(-1);
+  $("next").onclick = ()=>goWeek(1);
+  $("range").onclick = ()=>goWeek(0);
+  window.addEventListener("pagehide", flushWeekNow);
+  document.addEventListener("visibilitychange", ()=>{ if (document.hidden) flushWeekNow(); });
+
+  function normWeek(w){ w = w || {}; return {diary: w.diary || {}, marks: w.marks || {}}; }
+
+  // ---------- init ----------
+  habits = (LS.get("habits")||{}).list || defaultHabits();
+  week = normWeek(LS.get(weekKey()));
+  renderAll();
+
+  (async function connect(){
+    if (!window.claude || !window.claude.use){ setStatus("이 기기에만 저장돼요"); return; }
+    const timer = setTimeout(()=>setStatus("이 기기에만 저장되고 있어요"), 10000);
+    try{
+      db = await window.claude.use("db");
+      const user = await window.claude.use("user");
+      uid = user && user.id ? await user.id() : null;
+    }catch(e){ db = null; }
+    clearTimeout(timer);
+    if (!db || !uid){ setStatus("이 기기에만 저장돼요"); return; }
+    cloudOk = true;
+    const k = weekKey();
+    const [h, w] = await Promise.all([load("habits"), load(k)]);
+    const hadCloudHabits = h && Array.isArray(h.list);
+    if (hadCloudHabits) habits = h.list;
+    if (k === weekKey() && w) week = normWeek(w);
+    if (!diaryTimer && !markTimer) renderAll();
+    if (!hadCloudHabits) saveHabits();
+    setStatus("계정에 저장돼요 · 어느 기기에서든 이어서 쓸 수 있어요");
+  })();
+})();
+</script>
+</body>
+</html>
