@@ -12,29 +12,56 @@
     --accent:#e9e1c9; --today:#fbf3d6;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html,body{margin:0;background:#e6e4de;color:var(--ink);font-family:"Gowun Dodum",system-ui,sans-serif}
-  body{padding:calc(env(safe-area-inset-top) + 12px) 10px calc(env(safe-area-inset-bottom) + 24px)}
+  html,body{margin:0;color:var(--ink);font-family:"Gowun Dodum",system-ui,sans-serif;overflow-x:hidden}
+  html{background:#d8d2c6}
+  body{min-height:100vh;padding:calc(env(safe-area-inset-top) + 12px) 10px calc(env(safe-area-inset-bottom) + 24px);
+    background:radial-gradient(ellipse at 30% 0%,rgba(255,255,255,.35),transparent 60%),#d8d2c6}
   .hand{font-family:"Gaegu",cursive}
   .wrap{max-width:1100px;margin:0 auto}
   header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:4px 4px 12px}
-  h1{font-family:"Gaegu",cursive;font-weight:700;font-size:30px;margin:0;letter-spacing:.5px}
+  h1{font-family:"Gaegu",cursive;font-weight:700;font-size:30px;margin:0;letter-spacing:.5px;white-space:nowrap}
+  @media (max-width:420px){ h1{font-size:25px} .range{min-width:0;font-size:17px;white-space:nowrap} .weeknav button{width:30px;height:30px} }
   .weeknav{display:flex;align-items:center;gap:4px}
   .weeknav button{border:0;background:var(--paper);width:34px;height:34px;border-radius:50%;font-size:18px;cursor:pointer;color:var(--ink)}
   .range{font-family:"Gaegu",cursive;font-size:20px;min-width:118px;text-align:center;cursor:pointer}
   .tabs{display:flex;background:var(--paper2);border-radius:12px;padding:4px;margin:0 2px 12px}
   .tabs button{flex:1;border:0;background:transparent;padding:9px 0;border-radius:9px;font:inherit;font-size:15px;color:var(--ink2);cursor:pointer}
   .tabs button.on{background:var(--paper);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
-  .spread{display:grid;grid-template-columns:1fr;gap:12px}
-  .page{background:var(--paper);border-radius:6px;box-shadow:0 1px 0 rgba(0,0,0,.04),0 6px 18px rgba(0,0,0,.06);padding:14px 12px 18px;position:relative}
+  /* notebook */
+  .book{position:relative;background:linear-gradient(135deg,#2c2c2c,#1b1b1b);border-radius:14px;padding:7px 16px 7px 7px;
+    box-shadow:0 22px 40px -12px rgba(0,0,0,.45),0 3px 8px rgba(0,0,0,.25)}
+  .band{position:absolute;top:-5px;bottom:-5px;right:4px;width:8px;border-radius:3px;background:linear-gradient(90deg,#111,#333 50%,#111);
+    box-shadow:0 0 3px rgba(0,0,0,.5);z-index:30;pointer-events:none}
+  .ribbon{position:absolute;bottom:-22px;left:38%;width:9px;height:40px;background:#9c2b2b;clip-path:polygon(0 0,100% 0,100% 100%,50% 82%,0 100%);z-index:-1}
+  .spread{position:relative;display:grid;grid-template-columns:1fr;perspective:2400px}
+  .page{position:relative;padding:14px 12px 22px;min-height:70vh;
+    background:linear-gradient(90deg,rgba(0,0,0,.12),rgba(0,0,0,0) 26px),var(--paper);
+    border-radius:3px 9px 9px 3px;
+    box-shadow:1px 0 0 #e8e5dd,2px 0 0 #cfcac0,3px 0 0 #ebe8e1,4px 0 0 #cdc8be,5px 0 0 #e6e3db}
   .page[hidden]{display:none}
+  .pfoot{position:absolute;bottom:6px;left:0;right:0;text-align:center;font-family:"Gaegu",cursive;font-size:14px;color:#b0ada5}
   .label{font-size:11px;letter-spacing:2px;color:#9a978f;text-align:center;margin-bottom:6px}
   @media (min-width:900px){
     .tabs{display:none}
-    .spread{grid-template-columns:1fr 1.15fr;gap:0}
+    .book{padding:9px 18px 9px 9px}
+    .spread{grid-template-columns:1fr 1fr}
     .page[hidden]{display:block}
-    #diaryPage{border-radius:6px 0 0 6px;border-right:1px solid var(--line)}
-    #trackPage{border-radius:0 6px 6px 0}
+    .page.left{border-radius:9px 2px 2px 9px;
+      background:linear-gradient(270deg,rgba(0,0,0,.14),rgba(0,0,0,0) 42px),var(--paper);
+      box-shadow:-1px 0 0 #e8e5dd,-2px 0 0 #cfcac0,-3px 0 0 #ebe8e1,-4px 0 0 #cdc8be,-5px 0 0 #e6e3db}
+    .page.right{border-radius:2px 9px 9px 2px;
+      background:linear-gradient(90deg,rgba(0,0,0,.14),rgba(0,0,0,0) 42px),var(--paper)}
   }
+  /* page turn */
+  .ov{position:absolute;pointer-events:none;z-index:20}
+  .ov .page{position:absolute;inset:0;margin:0;min-height:0;overflow:hidden;display:block}
+  .flipper{transform-style:preserve-3d;will-change:transform}
+  .flipper .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+  .flipper .back{transform:rotateY(180deg)}
+  .shade{position:absolute;inset:0;pointer-events:none;opacity:0;border-radius:inherit}
+  .face.front .shade{background:linear-gradient(90deg,rgba(0,0,0,.05),rgba(0,0,0,.28))}
+  .face.back .shade{background:linear-gradient(270deg,rgba(0,0,0,.05),rgba(0,0,0,.28))}
+  .blankpage{position:absolute;inset:0;background:linear-gradient(270deg,rgba(0,0,0,.12),rgba(0,0,0,0) 26px),var(--paper);border-radius:9px 3px 3px 9px}
 
   /* diary */
   .day{display:grid;grid-template-columns:52px 1fr;border-top:1px solid var(--line)}
@@ -102,12 +129,15 @@
     <button id="tabTrack">습관 체크</button>
   </div>
 
-  <div class="spread">
-    <section class="page" id="diaryPage">
+  <div class="book" id="book">
+  <div class="band"></div><div class="ribbon"></div>
+  <div class="spread" id="spread">
+    <section class="page left" id="diaryPage">
       <div class="label">DIARY</div>
       <div id="days"></div>
+      <div class="pfoot" data-foot></div>
     </section>
-    <section class="page" id="trackPage" hidden>
+    <section class="page right" id="trackPage" hidden>
       <div class="toolbar">
         <div class="label" style="margin:0;text-align:left">DATUM / DATE</div>
         <button class="btn" id="editBtn">목록 편집</button>
@@ -116,7 +146,9 @@
       <div class="legend">
         <span><i class="o"></i>했어요</span><span><i>△</i>조금</span><span><i>/</i>못 했어요</span><span style="color:#aaa">칸을 누를 때마다 바뀌어요</span>
       </div>
+      <div class="pfoot" data-foot></div>
     </section>
+  </div>
   </div>
   <div class="status" id="status"></div>
 </div>
@@ -198,6 +230,10 @@
   function renderRange(){
     const s = dayDate(0), e = dayDate(6);
     $("range").textContent = (s.getMonth()+1)+"."+s.getDate()+" – "+(e.getMonth()+1)+"."+e.getDate();
+    const th = new Date(s); th.setDate(th.getDate()+3);
+    const y1 = new Date(th.getFullYear(),0,4);
+    const wn = 1 + Math.round(((th - y1)/864e5 - 3 + ((y1.getDay()+6)%7)) / 7);
+    document.querySelectorAll("[data-foot]").forEach(f=>{ f.textContent = "— " + th.getFullYear() + " · " + wn + "주 —"; });
   }
   function grow(t){ t.style.height = "auto"; t.style.height = Math.max(90, t.scrollHeight) + "px"; }
   function renderDiary(){
@@ -302,19 +338,131 @@
   $("editBtn").onclick = ()=>{ editing = !editing; renderTracker(); };
   $("tabDiary").onclick = ()=>{ tab="diary"; renderTabs(); };
   $("tabTrack").onclick = ()=>{ tab="track"; renderTabs(); };
+  // ---------- page turning ----------
+  let flipping = false;
+  const reduceMotion = () => { try{ return matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(e){ return false; } };
+  const isSpread = () => { try{ return matchMedia("(min-width:900px)").matches; }catch(e){ return false; } };
+  function snap(page){
+    const c = page.cloneNode(true);
+    c.removeAttribute("id"); c.hidden = false;
+    c.querySelectorAll("[id]").forEach(e=>e.removeAttribute("id"));
+    const src = page.querySelectorAll("textarea"), dst = c.querySelectorAll("textarea");
+    dst.forEach((t,i)=>{ t.value = src[i].value; t.style.height = src[i].style.height; });
+    return c;
+  }
+  function rectIn(el){
+    const s = $("spread").getBoundingClientRect(), r = el.getBoundingClientRect();
+    return {left:r.left-s.left, top:r.top-s.top, width:r.width, height:r.height};
+  }
+  function box(r, cls){
+    const d = document.createElement("div"); d.className = "ov " + (cls||"");
+    Object.assign(d.style, {left:r.left+"px", top:r.top+"px", width:r.width+"px", height:r.height+"px"});
+    $("spread").appendChild(d); return d;
+  }
+  function face(cls, content){
+    const f = document.createElement("div"); f.className = "face " + cls;
+    f.appendChild(content); const sh = document.createElement("div"); sh.className = "shade"; f.appendChild(sh);
+    return f;
+  }
+  function blank(){ const b = document.createElement("div"); b.className = "blankpage"; return b; }
+
+  // dir: 1 = next (turn right page to the left), -1 = previous
+  async function turnPage(dir, change){
+    if (reduceMotion()){ await change(); return; }
+    const spread = isSpread();
+    const L = $("diaryPage"), R = $("trackPage");
+    const vis = spread ? null : (tab==="diary" ? L : R);
+    const old = spread ? {L:snap(L), R:snap(R), rL:rectIn(L), rR:rectIn(R)} : {P:snap(vis), rP:rectIn(vis)};
+    // freeze the old look while new data loads
+    const hold = spread ? [box(old.rL), box(old.rR)] : [box(old.rP)];
+    if (spread){ hold[0].appendChild(old.L); hold[1].appendChild(old.R); } else hold[0].appendChild(old.P);
+    await change();
+    let flip, under = [], from, to, origin;
+    if (spread){
+      const nL = snap(L), nR = snap(R);
+      if (dir > 0){
+        under = [hold[0]]; hold[1].remove();
+        flip = box(old.rR, "flipper"); origin = "left center";
+        flip.append(face("front", old.R), face("back", nL));
+        from = 0; to = -180;
+      } else {
+        under = [hold[1]]; hold[0].remove();
+        flip = box(old.rL, "flipper"); origin = "right center";
+        flip.append(face("front", old.L), face("back", nR));
+        from = 0; to = 180;
+      }
+    } else {
+      if (dir > 0){
+        hold[0].remove();
+        flip = box(old.rP, "flipper"); origin = "left center";
+        flip.append(face("front", old.P), face("back", blank()));
+        from = 0; to = -180;
+      } else {
+        under = [hold[0]];
+        const nP = snap(vis);
+        flip = box(rectIn(vis), "flipper"); origin = "left center";
+        flip.append(face("front", nP), face("back", blank()));
+        from = -180; to = 0;
+      }
+    }
+    flip.style.transformOrigin = origin;
+    flip.style.zIndex = 25;
+    const dur = spread ? 900 : 720;
+    const ease = "cubic-bezier(.42,.04,.3,1)";
+    const anim = flip.animate([
+      {transform:`rotateY(${from}deg)`},
+      {transform:`rotateY(${(from+to)/2}deg) scale(1.015)`, offset:.5},
+      {transform:`rotateY(${to}deg)`}
+    ], {duration:dur, easing:ease, fill:"forwards"});
+    const fs = flip.querySelector(".front .shade"), bs = flip.querySelector(".back .shade");
+    const fwd = Math.abs(to) > Math.abs(from);
+    fs.animate([{opacity: fwd?0:.9},{opacity:.9, offset:.5},{opacity: fwd?.9:0}], {duration:dur, easing:ease, fill:"forwards"});
+    bs.animate([{opacity: fwd?.9:0},{opacity:.9, offset:.5},{opacity: fwd?0:.9}], {duration:dur, easing:ease, fill:"forwards"});
+    try{ await anim.finished; }catch(e){}
+    flip.remove(); under.forEach(u=>u.remove());
+  }
+
   async function goWeek(delta){
+    if (flipping) return;
+    let target = new Date(monday);
+    if (delta===0) target = new Date(thisMonday); else target.setDate(target.getDate()+delta*7);
+    if (ymd(target) === ymd(monday)) return;
+    const dir = target > monday ? 1 : -1;
     flushWeekNow();
-    if (delta===0) monday = new Date(thisMonday); else monday.setDate(monday.getDate()+delta*7);
-    renderRange();
-    const k = weekKey();
-    const w = await load(k);
-    if (k !== weekKey()) return;
-    week = normWeek(w);
-    renderDiary(); renderTracker();
+    flipping = true;
+    try{
+      await turnPage(dir, async ()=>{
+        monday = target;
+        renderRange();
+        const k = weekKey();
+        const w = await load(k);
+        if (k !== weekKey()) return;
+        week = normWeek(w);
+        renderDiary(); renderTracker();
+      });
+    } finally {
+      flipping = false;
+      document.querySelectorAll("#spread > .ov").forEach(o=>o.remove());
+    }
   }
   $("prev").onclick = ()=>goWeek(-1);
   $("next").onclick = ()=>goWeek(1);
   $("range").onclick = ()=>goWeek(0);
+
+  // swipe to turn pages
+  let sx = null, sy = 0, st = 0;
+  $("spread").addEventListener("touchstart", e=>{
+    const t = e.target;
+    if ((t.tagName==="TEXTAREA"||t.tagName==="INPUT") && document.activeElement===t){ sx = null; return; }
+    if (e.touches.length!==1){ sx = null; return; }
+    sx = e.touches[0].clientX; sy = e.touches[0].clientY; st = Date.now();
+  }, {passive:true});
+  $("spread").addEventListener("touchend", e=>{
+    if (sx===null) return;
+    const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+    sx = null;
+    if (Math.abs(dx) > 70 && Math.abs(dy) < 50 && Date.now()-st < 700) goWeek(dx < 0 ? 1 : -1);
+  }, {passive:true});
   window.addEventListener("pagehide", flushWeekNow);
   document.addEventListener("visibilitychange", ()=>{ if (document.hidden) flushWeekNow(); });
 
